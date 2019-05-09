@@ -1,0 +1,94 @@
+package NumberLetterCounts;
+
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+class PowFinder{
+
+        public static int find(int number) {
+            String stringNumber = Integer.toString(number);
+            int numberLength = stringNumber.length() - 1;
+            return numberLength;
+        }
+}
+
+
+class Teleporter{
+    private Map<Integer, String> words = Stream.of(new Object[][]{
+            {0, ""},
+            {1, "one"},
+            {2, "two"},
+            {3, "three"},
+            {4, "four"},
+            {5, "five"},
+            {6, "six"},
+            {7, "seven"},
+            {8, "eight"},
+            {9, "nine"},
+            {10, "ten"},
+            {11, "eleven"},
+            {12, "twelve"},
+            {13, "thirteen"},
+            {14, "fourteen"},
+            {15, "fifteen"},
+            {16, "sixteen"},
+            {17, "seventeen"},
+            {18, "eighteen"},
+            {19, "nineteen"},
+            {20, "twenty"},
+            {30, "thirty"},
+            {40, "forty"},
+            {50, "fifty"},
+            {60, "sixty"},
+            {70, "seventy"},
+            {80, "eighty"},
+            {90, "ninety"},
+            {100, "hundred"},
+    }).collect(Collectors.toMap(data -> (Integer) data[0], data -> (String) data[1]));
+
+    public String getStringFor(int number) {
+        String result = "";
+
+
+        if(number <= 20){
+            return this.words.get(number);
+        }
+        int pow = PowFinder.find(number);
+        int tenToThePow = (int) Math.pow(10, pow);
+        int resto = number % tenToThePow;
+
+        int remainer = number/tenToThePow;
+        if(resto >0){
+            String leftOverNumber = "";
+            if (this.words.containsKey(number - resto)) {
+                leftOverNumber = this.words.get(number - resto);
+                return leftOverNumber;
+            }
+            else {
+                leftOverNumber = this.getStringFor(resto);
+                return this.words.get(remainer) + this.words.get(tenToThePow) + leftOverNumber;
+            }
+        }
+
+
+        return this.words.get(remainer) + this.words.get(tenToThePow);
+    }
+}
+
+public class LetterSummator {
+    private int max;
+
+    public LetterSummator(int i) {
+        max = i;
+    }
+
+    public Object lettersCount() {
+        int sum = 0;
+        Teleporter teleporter = new Teleporter();
+        for (int i = 1; i <= this.max; i++) {
+            sum += teleporter.getStringFor(i).length();
+        }
+        return sum;
+    }
+}
