@@ -44,14 +44,19 @@ class Teleporter{
             {70, "seventy"},
             {80, "eighty"},
             {90, "ninety"},
+    }).collect(Collectors.toMap(data -> (Integer) data[0], data -> (String) data[1]));
+
+    private Map<Integer, String> pows = Stream.of(new Object[][]{
             {100, "hundred"},
+            {1000, "thousand"},
+
     }).collect(Collectors.toMap(data -> (Integer) data[0], data -> (String) data[1]));
 
     public String getStringFor(int number) {
         String result = "";
 
 
-        if(number <= 20){
+        if(this.words.containsKey(number)){
             return this.words.get(number);
         }
         int pow = PowFinder.find(number);
@@ -59,20 +64,25 @@ class Teleporter{
         int resto = number % tenToThePow;
 
         int remainer = number/tenToThePow;
-        if(resto >0){
-            String leftOverNumber = "";
-            if (this.words.containsKey(number - resto)) {
-                leftOverNumber = this.words.get(number - resto);
-                return leftOverNumber;
-            }
-            else {
-                leftOverNumber = this.getStringFor(resto);
-                return this.words.get(remainer) + this.words.get(tenToThePow) + leftOverNumber;
-            }
+        String leftOverNumber = "";
+        
+        if (this.words.containsKey(number - resto)) {
+            return getRoundNumber(number, resto);
         }
+        else {
+            leftOverNumber = this.getStringFor(resto);
+            String finished = this.words.get(remainer) + this.pows.get(tenToThePow);
+            if(pow == 2 && resto >0){
+                finished += "and";
+            }
+            return finished + leftOverNumber;
+        }
+    }
 
-
-        return this.words.get(remainer) + this.words.get(tenToThePow);
+    private String getRoundNumber(int number, int resto) {
+        String leftOverNumber;
+        leftOverNumber = this.words.get(number - resto);
+        return leftOverNumber + this.getStringFor(resto);
     }
 }
 

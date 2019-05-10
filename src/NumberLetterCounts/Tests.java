@@ -11,12 +11,28 @@ public class Tests {
         LetterSummator summator = new LetterSummator(5);
         assertEquals(19, summator.lettersCount());
     }
+    @Test
+    public void shouldReturnSomethingWhen1000 () {
+        LetterSummator summator = new LetterSummator(1000);
+        assertEquals(21124, summator.lettersCount());
+    }
 
     @Test
     public void shoudlReturnStringForLongNumber() {
         Teleporter porter = new Teleporter();
-        //assertEquals("threehundredandfortytwo", porter.getStringFor(342));
+        assertEquals("threehundredandfortytwo", porter.getStringFor(342));
         assertEquals("fortytwo", porter.getStringFor(42));
+    }
+    @Test
+    public void shoudlReturnStringThreeHundred() {
+        Teleporter porter = new Teleporter();
+        assertEquals("threehundred", porter.getStringFor(300));
+    }
+    @Test
+    public void shouldBe20lettersLongFor115() {
+        Teleporter porter = new Teleporter();
+        String inLetters = porter.getStringFor(115);
+        assertEquals(20, inLetters.length());
     }
     @Test
     public void shouldReturnStringForANumber(){
@@ -29,6 +45,9 @@ public class Tests {
         assertEquals("twelve", porter.getStringFor(12));
         assertEquals("nineteen", porter.getStringFor(19));
         assertEquals("twenty", porter.getStringFor(20));
+        assertEquals("onehundred", porter.getStringFor(100));
+        assertEquals("onethousand", porter.getStringFor(1000));
+
     }
     @Test
     public void shouldReturnStringForANumber21(){
